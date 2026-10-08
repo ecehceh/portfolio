@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portfolio</title>
+  <meta name="description" content="Personal portfolio — creative developer and designer.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="cursor" aria-hidden="true"></div>
+  <canvas id="character-canvas" aria-hidden="true"></canvas>
+
+  <header class="nav">
+    <a href="#top" class="nav-logo" id="nav-logo"></a>
+    <a class="nav-email" id="nav-email"></a>
+    <nav aria-label="Main">
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <aside class="socials" id="socials" aria-label="Social links"></aside>
+  <a class="resume" id="resume-link" target="_blank" rel="noopener">Resume <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></a>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="hero-left">
+        <p class="hero-hello">Hello! I'm</p>
+        <h1 class="hero-name"><span id="hero-first"></span><span id="hero-last"></span></h1>
+      </div>
+      <div class="hero-right">
+        <p class="hero-kicker" id="hero-kicker">A Creative</p>
+        <div class="hero-words"><span class="hero-word gradient" id="rotating-word"></span></div>
+        <p class="hero-word solid" id="hero-title">DEVELOPER</p>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="about-inner">
+        <p class="eyebrow">About me</p>
+        <p class="about-text" id="about-text"></p>
+      </div>
+    </section>
+
+    <section class="whatido" id="whatido">
+      <h2 class="whatido-title" data-reveal>W<span class="hollow">HAT</span><br>I<span class="hollow"> DO</span></h2>
+      <div class="whatido-cards" id="whatido-cards"></div>
+    </section>
+
+    <section class="career" id="career">
+      <h2 class="section-title" data-reveal>My career <span class="accent">&amp;</span><br><span class="accent">experience</span></h2>
+      <div class="timeline" id="timeline">
+        <div class="timeline-line"><span class="timeline-fill"></span></div>
+      </div>
+    </section>
+
+    <section class="work" id="work">
+      <h2 class="section-title work-title">My <span class="accent">Work</span></h2>
+      <div class="work-track" id="work-track"></div>
+    </section>
+
+    <section class="techstack" id="techstack">
+      <h2 class="techstack-title">My Techstack</h2>
+      <canvas id="techstack-canvas" aria-label="Interactive balls showing the technologies I use"></canvas>
+      <p class="techstack-hint">Move your cursor through the balls</p>
+    </section>
+
+    <section class="contact" id="contact">
+      <h2 class="section-title" data-reveal>Contact</h2>
+      <div class="contact-grid">
+        <div class="contact-col" data-reveal>
+          <h3>Email</h3>
+          <a id="contact-email"></a>
+          <h3>Education</h3>
+          <p id="contact-education"></p>
+          <h3>Location</h3>
+          <p id="contact-location"></p>
+        </div>
+        <div class="contact-col" data-reveal>
+          <h3>Social</h3>
+          <ul class="contact-socials" id="contact-socials"></ul>
+        </div>
+        <div class="contact-col contact-credit" data-reveal>
+          <p>Designed and Developed<br>by <span class="accent" id="credit-name"></span></p>
+          <p class="copyright"><i class="fa-regular fa-copyright" aria-hidden="true"></i> <span id="year"></span></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/avatar-model.js"></script>
+  <script src="js/character.js"></script>
+  <script src="js/techstack.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
