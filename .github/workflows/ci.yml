@@ -50,6 +50,23 @@ jobs:
           path: playwright-report/
           retention-days: 7
 
+  docker:
+    name: Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      # Builds the image and waits for its HEALTHCHECK to pass.
+      - name: Build and start the container
+        run: docker compose up --build --detach --wait --wait-timeout 120
+      - name: Smoke-test the container
+        run: bash scripts/docker-smoke.sh http://localhost:3000
+      - name: Show container logs
+        if: failure()
+        run: docker compose logs
+      - name: Stop the container
+        if: always()
+        run: docker compose down
+
   commits:
     name: Conventional commit messages
     if: github.event_name == 'pull_request'

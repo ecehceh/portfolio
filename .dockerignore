@@ -1,0 +1,32 @@
+# Keep the build context small and free of local state and secrets.
+
+# Dependencies and build output are recreated inside the image
+node_modules
+.next
+out
+
+# Version control, editors and OS files
+.git
+.github
+.vscode
+.idea
+*.log
+.DS_Store
+Thumbs.db
+
+# Test output
+coverage
+playwright-report
+test-results
+blob-report
+
+# Local env files may hold secrets; pass values with --build-arg instead
+.env*
+!.env.example
+
+# Docker and deployment files that the image itself doesn't need
+Dockerfile
+.dockerignore
+compose.yaml
+.vercel
+*.tsbuildinfo

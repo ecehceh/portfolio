@@ -1,0 +1,31 @@
+# Run the production image locally or on a server:
+#   docker compose up --build --detach --wait     # build, start, wait until healthy
+#   docker compose logs -f web
+#   docker compose down
+# Settings come from the environment or a .env file next to this one, e.g.
+#   NEXT_PUBLIC_SITE_URL=https://your-domain.com PORT=8080 docker compose up --build -d
+services:
+  web:
+    build:
+      context: .
+      args:
+        # Baked in at build time (canonical URL, Open Graph tags, sitemap).
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    image: portfolio:local
+    ports:
+      - "${PORT:-3000}:3000"
+    restart: unless-stopped
+    # Hardening: nothing in the container needs to write to its filesystem or
+    # gain privileges. Next.js may cache to .next/cache, so that is a tmpfs.
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /app/.next/cache:uid=1000,gid=1000
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          memory: 512M
