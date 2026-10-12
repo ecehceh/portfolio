@@ -21,6 +21,7 @@ export const portfolio: Portfolio = {
   heroKicker: 'CS Student &',
   heroWords: ['DEVOPS', 'SECURITY', 'AI'],
   heroTitle: 'ENGINEER',
+  jobTitle: 'DevOps, Security & AI Engineer',
 
   tagline:
     'Computer Science student at Bina Nusantara University working across DevOps, cybersecurity and AI — CI/CD pipelines, SIEM monitoring and AI-assisted threat analysis.',

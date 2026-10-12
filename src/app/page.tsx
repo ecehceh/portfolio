@@ -14,11 +14,18 @@ import { WhatIDo } from '@/components/sections/WhatIDo';
 import { Work } from '@/components/sections/Work';
 import { portfolio } from '@/content/portfolio';
 import { displayName } from '@/lib/format';
+import { personJsonLd, serializeJsonLd } from '@/lib/seo';
+import { siteUrl } from '@/lib/site';
 
 export default function HomePage() {
   const data = portfolio;
   return (
     <>
+      <script
+        type="application/ld+json"
+        // Built from our own content and escaped by serializeJsonLd, never user input.
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(personJsonLd(data, siteUrl())) }}
+      />
       <Cursor />
       <CharacterStage />
       <Nav logo={data.logo} email={data.email} />

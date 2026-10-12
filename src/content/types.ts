@@ -50,6 +50,8 @@ export interface Portfolio {
   heroKicker: string;
   heroWords: readonly string[];
   heroTitle: string;
+  /** Used for search results and link previews. */
+  jobTitle: string;
   /** One-line summary used for the page description and link previews. */
   tagline: string;
   about: string;

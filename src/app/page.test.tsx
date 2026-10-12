@@ -35,6 +35,12 @@ describe('HomePage', () => {
     );
   });
 
+  it('embeds schema.org Person data for search engines', () => {
+    const { container } = render(<HomePage />);
+    const script = container.querySelector('script[type="application/ld+json"]');
+    expect(JSON.parse(script?.textContent ?? '{}')).toMatchObject({ '@type': 'Person', name: 'Christopher Evan Wijaksana' });
+  });
+
   it('links the main navigation to the page sections', () => {
     render(<HomePage />);
     const nav = within(screen.getByRole('navigation', { name: 'Main' }));
