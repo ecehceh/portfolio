@@ -96,6 +96,19 @@ describe('Nav', () => {
 });
 
 describe('PageMotion', () => {
+  it('takes over the hidden intro state from CSS, and hands it back on unmount', () => {
+    const { unmount } = render(<PageMotion />);
+    expect(document.documentElement).toHaveClass('motion-ready');
+    unmount();
+    expect(document.documentElement).not.toHaveClass('motion-ready');
+  });
+
+  it('skips the intro for visitors who prefer reduced motion', () => {
+    setMediaMatches(['(prefers-reduced-motion: reduce)']);
+    render(<PageMotion />);
+    expect(document.documentElement).not.toHaveClass('motion-ready');
+  });
+
   it('sets up the page animations without rendering anything', () => {
     setMediaMatches(['(min-width: 900px)']);
     const { container, unmount } = render(<PageMotion />);

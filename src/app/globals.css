@@ -58,6 +58,20 @@ ul { margin: 0; padding: 0; list-style: none; }
   border-radius: 4px;
 }
 
+/* ---------- Intro ---------- */
+/*
+ * The page is prerendered, so without this the hero and nav would paint, then
+ * vanish when the GSAP intro starts, then fade back in. The inline script in
+ * layout.tsx adds .js-motion before the first paint (only with JS on and no
+ * reduced-motion preference); PageMotion adds .motion-ready once its tweens own
+ * the hidden state. If scripts never run, the fallback animation shows it all.
+ */
+.js-motion:not(.motion-ready) :is(.hero-hello, .hero-name span, .hero-kicker, .hero-words, .hero-word.solid, .nav, .socials a, .resume) {
+  opacity: 0;
+  animation: intro-fallback 0.6s ease-out 3s forwards;
+}
+@keyframes intro-fallback { to { opacity: 1; } }
+
 /* ---------- Cursor ---------- */
 .cursor {
   position: fixed;

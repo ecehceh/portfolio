@@ -13,6 +13,10 @@ fontAwesomeConfig.autoAddCss = false;
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' });
 
+// Runs before the first paint so the intro targets start hidden (see "Intro" in globals.css).
+const MOTION_FLAG_SCRIPT =
+  "if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('js-motion')";
+
 export const metadata: Metadata = buildMetadata(portfolio, siteUrl());
 
 export const viewport: Viewport = {
@@ -22,7 +26,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en" className={geist.variable}>
+    // The inline script changes <html>'s class before React hydrates it.
+    <html lang="en" className={geist.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: MOTION_FLAG_SCRIPT }} />
+      </head>
       <body>{children}</body>
     </html>
   );

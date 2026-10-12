@@ -4,7 +4,14 @@ import { useAnchorScroll } from '@/hooks/useAnchorScroll';
 import { useBodyClassWhileVisible } from '@/hooks/useBodyClassWhileVisible';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { DESKTOP_QUERY, prefersReducedMotion } from '@/lib/media';
-import { fillTimeline, playIntro, revealAboutWords, revealOnScroll, scrollWorkSideways } from '@/lib/motion/page-scenes';
+import {
+  fillTimeline,
+  playIntro,
+  resetIntro,
+  revealAboutWords,
+  revealOnScroll,
+  scrollWorkSideways,
+} from '@/lib/motion/page-scenes';
 
 /**
  * Runs the page-wide animations over the server-rendered sections. Render it
@@ -22,6 +29,7 @@ export function PageMotion() {
     revealAboutWords();
     fillTimeline();
     revealOnScroll();
+    return resetIntro;
   });
 
   return null;

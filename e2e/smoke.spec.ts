@@ -33,6 +33,13 @@ test.describe('home page', () => {
     await expect(page.locator('html')).not.toHaveClass(/no-webgl/);
   });
 
+  test('fades the hero in once the intro takes over', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveClass(/js-motion/);
+    await expect(page.locator('html')).toHaveClass(/motion-ready/);
+    await expect(page.locator('.hero-hello')).toHaveCSS('opacity', '1', { timeout: 10_000 });
+  });
+
   test('rotates the hero word', async ({ page }) => {
     await page.goto('/');
     const word = page.locator('.hero-word.gradient');
@@ -78,6 +85,17 @@ test.describe('reduced motion', () => {
     await page.waitForTimeout(3_500);
     await expect(page.locator('.hero-word.gradient')).toHaveText('DEVOPS');
     await expect(page.locator('#character-canvas')).toHaveCSS('opacity', '1');
+  });
+});
+
+test.describe('without JavaScript', () => {
+  test.use({ javaScriptEnabled: false });
+
+  test('still shows the full prerendered page', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('html')).not.toHaveClass(/js-motion/);
+    await expect(page.locator('.hero-hello')).toHaveCSS('opacity', '1');
+    await expect(page.getByRole('heading', { name: 'Contact', level: 2 })).toBeAttached();
   });
 });
 

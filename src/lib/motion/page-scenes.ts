@@ -5,19 +5,32 @@
  */
 import { gsap } from '@/lib/gsap';
 
+/** Added to <html> once the intro tweens own the hidden start state (see "Intro" in globals.css). */
+export const MOTION_READY_CLASS = 'motion-ready';
+
+/**
+ * fromTo rather than from: until the intro starts, CSS keeps these hidden so the
+ * prerendered page doesn't flash, so their current opacity is not the end value.
+ */
 export function playIntro(): void {
-  gsap.from('.hero-hello, .hero-name span, .hero-kicker, .hero-words, .hero-word.solid', {
-    y: 50,
-    opacity: 0,
+  gsap.fromTo('.hero-hello, .hero-name span, .hero-kicker, .hero-words, .hero-word.solid', { y: 50, opacity: 0 }, {
+    y: 0,
+    opacity: 1,
     duration: 1.1,
     stagger: 0.08,
     ease: 'power3.out',
     delay: 0.2,
   });
   // clearProps hands opacity back to CSS afterwards (needed for the contact-section fade).
-  gsap.from('.nav, .socials a, .resume', {
-    opacity: 0, y: -12, duration: 0.8, stagger: 0.05, delay: 0.6, clearProps: 'opacity,transform',
+  gsap.fromTo('.nav, .socials a, .resume', { opacity: 0, y: -12 }, {
+    opacity: 1, y: 0, duration: 0.8, stagger: 0.05, delay: 0.6, clearProps: 'opacity,transform',
   });
+  // The tweens above now hold the hidden start state inline, so CSS can let go.
+  document.documentElement.classList.add(MOTION_READY_CLASS);
+}
+
+export function resetIntro(): void {
+  document.documentElement.classList.remove(MOTION_READY_CLASS);
 }
 
 /** Desktop only: pins the work section and scrolls the project cards sideways. */
