@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { contentSecurityPolicy, securityHeaders } from './security-headers';
+import { contentSecurityPolicy, routeHeaders, securityHeaders } from './security-headers';
 
 describe('contentSecurityPolicy', () => {
   it('locks production down to our own origin', () => {
@@ -30,5 +30,16 @@ describe('securityHeaders', () => {
     });
     expect(headers['Strict-Transport-Security']).toMatch(/max-age=\d+/);
     expect(headers['Content-Security-Policy']).toBe(contentSecurityPolicy(false));
+  });
+});
+
+describe('routeHeaders', () => {
+  it('sends the CSP on pages but not on the static assets such as the resume PDF', () => {
+    const [pages, assets] = routeHeaders(false);
+    const keys = (rule: typeof pages) => rule?.headers.map((header) => header.key) ?? [];
+    expect(keys(pages)).toContain('Content-Security-Policy');
+    expect(keys(assets)).not.toContain('Content-Security-Policy');
+    expect(keys(assets)).toContain('X-Content-Type-Options');
+    expect(assets?.source).toBe('/assets/:path*');
   });
 });

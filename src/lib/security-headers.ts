@@ -3,6 +3,13 @@ export interface Header {
   value: string;
 }
 
+export interface RouteHeaders {
+  source: string;
+  headers: Header[];
+}
+
+const CSP = 'Content-Security-Policy';
+
 /**
  * Content Security Policy for a fully static page: every script, style, font
  * and image is served from our own origin.
@@ -27,17 +34,32 @@ export function contentSecurityPolicy(isDev: boolean): string {
     'frame-ancestors': ["'none'"],
   };
   const policy = Object.entries(directives).map(([name, sources]) => `${name} ${sources.join(' ')}`);
+  // Production is HTTPS-only. Note this breaks `npm start` opened over plain http
+  // from another device on the LAN (localhost is exempt); use `npm run dev` there.
   return [...policy, ...(isDev ? [] : ['upgrade-insecure-requests'])].join('; ');
 }
 
 export function securityHeaders(isDev: boolean): Header[] {
   return [
-    { key: 'Content-Security-Policy', value: contentSecurityPolicy(isDev) },
+    { key: CSP, value: contentSecurityPolicy(isDev) },
     { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains' },
     { key: 'X-Content-Type-Options', value: 'nosniff' },
     { key: 'X-Frame-Options', value: 'DENY' },
     { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
     { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()' },
     { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+  ];
+}
+
+/**
+ * Header rules for next.config.ts. Static files under /assets (the resume PDF)
+ * get everything but the CSP: a policy does nothing for a PDF, and
+ * object-src 'none' can stop the browser's built-in PDF viewer from loading it.
+ */
+export function routeHeaders(isDev: boolean): RouteHeaders[] {
+  const all = securityHeaders(isDev);
+  return [
+    { source: '/((?!assets/).*)', headers: all },
+    { source: '/assets/:path*', headers: all.filter((header) => header.key !== CSP) },
   ];
 }

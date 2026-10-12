@@ -115,5 +115,8 @@ test.describe('platform routes', () => {
     expect(og.headers()['content-type']).toBe('image/png');
     const resume = await request.get('/assets/Christopher_Evan_Wijaksana_CV.pdf');
     expect(resume.headers()['content-type']).toBe('application/pdf');
+    // No CSP on the PDF, so the browser's PDF viewer is never blocked.
+    expect(resume.headers()['content-security-policy']).toBeUndefined();
+    expect(resume.headers()['x-content-type-options']).toBe('nosniff');
   });
 });
