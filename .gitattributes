@@ -1,0 +1,8 @@
+# Store text files with LF in the repo so Windows, CI (Linux) and Vercel agree.
+* text=auto eol=lf
+
+*.pdf binary
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary
