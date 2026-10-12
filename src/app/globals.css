@@ -7,7 +7,8 @@
   --line: rgba(234, 229, 236, 0.14);
   --accent: #c2a4ff;
   --accent-strong: #8d4bff;
-  --font: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* --font-geist is set on <html> by next/font in layout.tsx. */
+  --font: var(--font-geist), system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --gutter: clamp(1rem, 4vw, 4.5rem);
   --rail: 3.5rem; /* width reserved for the fixed social icons */
@@ -22,7 +23,7 @@
 *::after { box-sizing: border-box; }
 
 /* No CSS `scroll-behavior: smooth` here: it breaks GSAP ScrollTrigger's measurements.
-   Anchor links are smooth-scrolled in main.js instead. */
+   Anchor links are smooth-scrolled in JS instead (see useAnchorScroll). */
 
 body {
   margin: 0;
@@ -56,6 +57,20 @@ ul { margin: 0; padding: 0; list-style: none; }
   outline-offset: 4px;
   border-radius: 4px;
 }
+
+/* ---------- Intro ---------- */
+/*
+ * The page is prerendered, so without this the hero and nav would paint, then
+ * vanish when the GSAP intro starts, then fade back in. The inline script in
+ * layout.tsx adds .js-motion before the first paint (only with JS on and no
+ * reduced-motion preference); PageMotion adds .motion-ready once its tweens own
+ * the hidden state. If scripts never run, the fallback animation shows it all.
+ */
+.js-motion:not(.motion-ready) :is(.hero-hello, .hero-name span, .hero-kicker, .hero-words, .hero-word.solid, .nav, .socials a, .resume) {
+  opacity: 0;
+  animation: intro-fallback 0.6s ease-out 3s forwards;
+}
+@keyframes intro-fallback { to { opacity: 1; } }
 
 /* ---------- Cursor ---------- */
 .cursor {
@@ -179,8 +194,8 @@ ul { margin: 0; padding: 0; list-style: none; }
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
-.resume i { transition: transform 0.3s var(--ease-out); }
-.resume:hover i { transform: translateX(5px); }
+.resume svg { transition: transform 0.3s var(--ease-out); }
+.resume:hover svg { transform: translateX(5px); }
 
 /* ---------- Shared section bits ---------- */
 main > section {
@@ -378,8 +393,10 @@ main > .work {
   flex-direction: column;
   justify-content: center;
   padding-block: 6rem 4rem;
-  overflow: hidden;
 }
+/* Not under `main >`: once ScrollTrigger pins the section it is wrapped in a
+   .pin-spacer, and losing the clip would let the card track widen the page. */
+.work { overflow: hidden; }
 .work-title { margin-bottom: 2.5rem; }
 .work-track { display: flex; width: max-content; }
 .work-card {
@@ -502,8 +519,8 @@ main > .techstack {
 .contact-col a:hover { color: var(--accent); }
 .contact-socials { display: grid; gap: 0.5rem; }
 .contact-socials a { display: inline-flex; align-items: center; gap: 0.6rem; }
-.contact-socials i { font-size: 0.85rem; transition: transform 0.3s var(--ease-out); }
-.contact-socials a:hover i { transform: translate(3px, -3px); }
+.contact-socials svg { font-size: 0.85rem; transition: transform 0.3s var(--ease-out); }
+.contact-socials a:hover svg { transform: translate(3px, -3px); }
 .contact-credit { text-align: right; }
 .contact-credit p { font-size: clamp(1.4rem, 1rem + 1.2vw, 2.2rem); font-weight: 500; line-height: 1.2; }
 .contact-credit .copyright { margin-top: 1rem; font-size: 1rem; color: var(--muted); }

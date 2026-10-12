@@ -1,0 +1,57 @@
+import { Nav } from '@/components/layout/Nav';
+import { SideRail } from '@/components/layout/SideRail';
+import { CharacterStage } from '@/components/motion/CharacterStage';
+import { Cursor } from '@/components/motion/Cursor';
+import { PageMotion } from '@/components/motion/PageMotion';
+import { RotatingWord } from '@/components/motion/RotatingWord';
+import { TechStackCanvas } from '@/components/motion/TechStackCanvas';
+import { About } from '@/components/sections/About';
+import { Career } from '@/components/sections/Career';
+import { Contact } from '@/components/sections/Contact';
+import { Hero } from '@/components/sections/Hero';
+import { TechStack } from '@/components/sections/TechStack';
+import { WhatIDo } from '@/components/sections/WhatIDo';
+import { Work } from '@/components/sections/Work';
+import { portfolio } from '@/content/portfolio';
+import { displayName } from '@/lib/format';
+import { personJsonLd, serializeJsonLd } from '@/lib/seo';
+import { siteUrl } from '@/lib/site';
+
+export default function HomePage() {
+  const data = portfolio;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        // Built from our own content and escaped by serializeJsonLd, never user input.
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(personJsonLd(data, siteUrl())) }}
+      />
+      <Cursor />
+      <CharacterStage />
+      <Nav logo={data.logo} email={data.email} />
+      <SideRail socials={data.socials} resumeUrl={data.resumeUrl} />
+      <main>
+        <Hero
+          firstName={data.firstName}
+          lastName={data.lastName}
+          heroKicker={data.heroKicker}
+          heroTitle={data.heroTitle}
+          rotatingWord={<RotatingWord words={data.heroWords} />}
+        />
+        <About text={data.about} />
+        <WhatIDo services={data.whatIDo} />
+        <Career entries={data.career} />
+        <Work projects={data.projects} />
+        <TechStack canvas={<TechStackCanvas techs={data.techstack} />} />
+        <Contact
+          name={displayName(data)}
+          email={data.email}
+          education={data.education}
+          location={data.location}
+          socials={data.socials}
+        />
+      </main>
+      <PageMotion />
+    </>
+  );
+}

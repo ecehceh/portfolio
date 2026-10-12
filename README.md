@@ -1,58 +1,82 @@
 # Christopher Evan Wijaksana — Portfolio
 
-A personal developer portfolio with an interactive 3D avatar, scroll-driven animations and a physics-based tech stack section. Built with plain HTML, CSS and JavaScript — no build step.
+A personal developer portfolio with an interactive 3D avatar, scroll-driven animations and a physics-based tech stack section. Built with Next.js, Three.js and GSAP, and prerendered to static HTML so search engines and link previews see the real content.
 
 ## Features
 
 - **3D avatar** built entirely from Three.js primitives (no model files): glasses, cap, side-part hair. The head follows your cursor and the eyes blink.
 - **Scroll animations** with GSAP ScrollTrigger: the avatar slides aside for the About section, the bio reveals word by word, the career timeline line fills in, and the work section scrolls horizontally on desktop.
 - **Interactive tech stack**: labelled 3D balls drop in, cluster together and scatter away from the cursor.
-- **Data-driven content**: every piece of text, project, link and tech ball comes from a single file, `js/data.js`.
-- **Responsive**: stacked layout on phones and tablets; respects `prefers-reduced-motion`; falls back gracefully when WebGL is unavailable.
+- **Data-driven content**: every piece of text, project, link and tech ball comes from one typed file, `src/content/portfolio.ts`.
+- **SEO-ready**: prerendered HTML, Open Graph / Twitter cards with a generated preview image, `robots.txt`, `sitemap.xml` and schema.org Person data.
+- **Hardened**: a strict Content Security Policy and security headers on every response.
+- **Responsive and accessible**: stacked layout on phones and tablets, respects `prefers-reduced-motion`, falls back gracefully when WebGL is unavailable.
 
 ## Tech stack
 
 | | |
 |---|---|
-| Markup & styling | HTML5, CSS (custom properties, grid) |
+| Framework | [Next.js](https://nextjs.org/) 16 (App Router), React 19, TypeScript |
 | 3D | [Three.js](https://threejs.org/) r149 |
-| Animation | [GSAP](https://gsap.com/) 3.12 + ScrollTrigger |
-| Fonts & icons | Geist (Google Fonts), Font Awesome 6 |
+| Animation | [GSAP](https://gsap.com/) + ScrollTrigger via `@gsap/react` |
+| Fonts & icons | Geist (`next/font`), Font Awesome (tree-shaken SVG) |
+| Testing | Vitest + Testing Library, Playwright |
+| CI | GitHub Actions, commitlint, Dependabot |
 
-All libraries load from CDNs, so there is nothing to install.
+## Getting started
 
-## Running locally
-
-Open `index.html` directly in a browser, or serve the folder (recommended, so it behaves like the live site):
+Requires Node.js 20.9 or newer.
 
 ```bash
-python -m http.server 5173
+npm install
+npm run dev
 ```
 
-Then visit http://localhost:5173.
+Then visit http://localhost:3000.
+
+| Script | What it does |
+|---|---|
+| `npm run dev` | Start the dev server with Fast Refresh |
+| `npm run build` / `npm start` | Build and serve the production site |
+| `npm run lint` | ESLint (Next.js core-web-vitals rules) |
+| `npm run typecheck` | TypeScript type check |
+| `npm test` / `npm run test:coverage` | Unit and component tests (coverage must stay at 80%+) |
+| `npm run test:e2e` | Playwright smoke tests against the production build (run `npm run build` first) |
+
+Playwright downloads its own Chromium the first time (`npx playwright install chromium`). To use the Chrome already installed on your machine instead, run `PW_CHANNEL=chrome npm run test:e2e`.
 
 ## Project structure
 
 ```
-├── index.html            # Page layout and section markup
-├── css/style.css         # Design tokens, layout, responsive rules
-├── js/
-│   ├── data.js           # ✏️ All site content — edit this to update the portfolio
-│   ├── render.js         # Builds the page sections from data.js
-│   ├── avatar-model.js   # 3D avatar geometry (head, hair, cap, glasses, face)
-│   ├── character.js      # Avatar scene: lighting, cursor tracking, blinking
-│   ├── techstack.js      # Tech stack ball physics
-│   └── main.js           # Wires everything up: scroll animations, nav, cursor
-└── assets/               # Resume PDF and project images
+├── public/assets/            # Resume PDF and other static files
+├── src/
+│   ├── app/                  # Next.js routes: page, layout, globals.css,
+│   │                         # Open Graph image, icon, robots.txt, sitemap.xml
+│   ├── content/
+│   │   ├── portfolio.ts      # ✏️ All site content — edit this to update the portfolio
+│   │   └── types.ts          # The content's shape
+│   ├── components/
+│   │   ├── layout/           # Nav and the fixed social/resume rail
+│   │   ├── sections/         # Hero, About, What I do, Career, Work, Techstack, Contact
+│   │   ├── motion/           # Client components: 3D canvases, cursor, animations
+│   │   └── ui/               # Icons, safe links, current year
+│   ├── hooks/                # Scroll, visibility and anchor-link hooks
+│   └── lib/
+│       ├── three/            # Avatar geometry and the two WebGL scenes
+│       ├── motion/           # GSAP timelines and ScrollTriggers
+│       └── …                 # URL safety, SEO, security headers, formatting
+└── e2e/                      # Playwright smoke tests
 ```
+
+Sections are server components, so the whole page is plain HTML before any JavaScript runs. Only the canvases, the cursor and the animations are client components.
 
 ## Customizing
 
-**Content** — edit `js/data.js`: name, hero text, about, skills, career timeline, projects, tech stack balls, socials and contact details.
+**Content** — edit `src/content/portfolio.ts`: name, hero text, about, skills, career timeline, projects, tech stack balls, socials and contact details. TypeScript and the content tests catch typos such as a missing field, an invalid colour or an unsafe link.
 
-**Project images** — put images in `assets/` and set a project's `image` field (e.g. `"assets/wazuh-dashboard.png"`). Leave it empty for a gradient placeholder. Set `link` to a URL to make the card clickable.
+**Project images** — put images in `public/projects/` and set a project's `image` field (e.g. `"/projects/wazuh-dashboard.webp"`). Leave it empty for a gradient placeholder. Set `link` to a URL to make the card clickable.
 
-**Avatar** — the constants at the top of `js/avatar-model.js` control its look:
+**Avatar** — the constants at the top of `src/lib/three/avatar-model.ts` control its look:
 
 | Constant | Controls |
 |---|---|
@@ -61,15 +85,23 @@ Then visit http://localhost:5173.
 | `HAIR` | `volume` (height of the top), `partX` (side-part position) |
 | `HAIRLINE` | How far the hair reaches at the front, sides and back |
 
-## Deployment
+## Deployment (Vercel)
 
-The site is fully static, so it can be hosted anywhere. With GitHub Pages:
+1. Import the repository at [vercel.com/new](https://vercel.com/new). The defaults (framework *Next.js*, `npm run build`) work as they are.
+2. Every pull request gets its own preview URL; merging to `main` deploys production.
+3. **Custom domain:** in the Vercel project go to *Settings → Domains*, add the domain and create the DNS records Vercel shows at your registrar.
+4. Set the environment variable `NEXT_PUBLIC_SITE_URL` to the domain (e.g. `https://your-domain.com`) so canonical URLs, the sitemap and link previews use it. Without it, the Vercel production domain is used. See `.env.example`.
 
-1. Go to **Settings → Pages** in this repository.
-2. Under **Build and deployment**, choose **Deploy from a branch**, select `main` and `/ (root)`, then save.
-3. The site will be live at `https://ecehceh.github.io/portfolio/` within a minute or two.
+## Contributing workflow
 
-It also works on Netlify or Vercel by importing the repository with no build command.
+`main` always reflects what is deployed. Changes go through a branch and a pull request:
+
+1. Branch from `main`: `feat/…`, `fix/…`, `docs/…`, `chore/…`.
+2. Commit in small steps using [Conventional Commits](https://www.conventionalcommits.org/): `feat: add project images`, `fix: …`. Allowed types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, `ci`, `style`, `build`, `revert`.
+3. Open a pull request. CI runs lint, type check, unit tests (80% coverage gate), the production build, the Playwright smoke tests and commitlint, and Vercel posts a preview link.
+4. Merge with **Rebase and merge** (or a merge commit) to keep each commit in `main`'s history, then delete the branch.
+
+Recommended GitHub settings (*Settings → Branches → Add rule* for `main`): require a pull request, require the CI checks to pass, and require a linear history.
 
 ## Contact
 
