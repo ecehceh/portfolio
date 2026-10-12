@@ -1,4 +1,5 @@
 import { Nav } from '@/components/layout/Nav';
+import { CharacterStage } from '@/components/motion/CharacterStage';
 import { SideRail } from '@/components/layout/SideRail';
 import { About } from '@/components/sections/About';
 import { Career } from '@/components/sections/Career';
@@ -14,6 +15,7 @@ export default function HomePage() {
   const data = portfolio;
   return (
     <>
+      <CharacterStage />
       <Nav logo={data.logo} email={data.email} />
       <SideRail socials={data.socials} resumeUrl={data.resumeUrl} />
       <main>

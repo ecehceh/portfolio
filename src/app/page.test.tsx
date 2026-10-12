@@ -1,7 +1,13 @@
 import { render, screen, within } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { portfolio } from '@/content/portfolio';
 import HomePage from './page';
+
+// jsdom has no WebGL; the 3D scenes are covered by the Playwright smoke tests.
+vi.mock('@/lib/three/character-scene', () => ({
+  createCharacterScene: () => null,
+  createCharacterState: () => ({ xFrac: 0, y: 0, turn: 0, fade: 1, intro: 1 }),
+}));
 
 describe('HomePage', () => {
   it('server-renders every section from the portfolio content', () => {
