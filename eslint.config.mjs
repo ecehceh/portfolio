@@ -13,7 +13,5 @@ export default defineConfig([
     'playwright-report/**',
     'test-results/**',
     'next-env.d.ts',
-    // Legacy vanilla site, removed once the migration is complete.
-    'js/**',
   ]),
 ]);
