@@ -41,7 +41,17 @@ test.describe('home page', () => {
   });
 
   test('rotates the hero word', async ({ page }) => {
+    // Without a GPU, software WebGL frames on CI can take over 500ms, and GSAP's
+    // lag smoothing then slows its clock to a crawl. Turn WebGL off here so the
+    // test times the word swap, not the renderer (the avatar falls back to CSS).
+    await page.addInitScript(() => {
+      const getContext = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, type: string, ...args: unknown[]) {
+        return type.includes('webgl') ? null : getContext.call(this, type as '2d', ...(args as []));
+      } as typeof getContext;
+    });
     await page.goto('/');
+    await expect(page.locator('html')).toHaveClass(/no-webgl/);
     const word = page.locator('.hero-word.gradient');
     const first = await word.textContent();
     await expect(word).not.toHaveText(first ?? '', { timeout: 8_000 });
