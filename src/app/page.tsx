@@ -1,6 +1,9 @@
 import { Nav } from '@/components/layout/Nav';
 import { SideRail } from '@/components/layout/SideRail';
 import { CharacterStage } from '@/components/motion/CharacterStage';
+import { Cursor } from '@/components/motion/Cursor';
+import { PageMotion } from '@/components/motion/PageMotion';
+import { RotatingWord } from '@/components/motion/RotatingWord';
 import { TechStackCanvas } from '@/components/motion/TechStackCanvas';
 import { About } from '@/components/sections/About';
 import { Career } from '@/components/sections/Career';
@@ -16,6 +19,7 @@ export default function HomePage() {
   const data = portfolio;
   return (
     <>
+      <Cursor />
       <CharacterStage />
       <Nav logo={data.logo} email={data.email} />
       <SideRail socials={data.socials} resumeUrl={data.resumeUrl} />
@@ -25,7 +29,7 @@ export default function HomePage() {
           lastName={data.lastName}
           heroKicker={data.heroKicker}
           heroTitle={data.heroTitle}
-          rotatingWord={<span className="hero-word gradient">{data.heroWords[0]}</span>}
+          rotatingWord={<RotatingWord words={data.heroWords} />}
         />
         <About text={data.about} />
         <WhatIDo services={data.whatIDo} />
@@ -40,6 +44,7 @@ export default function HomePage() {
           socials={data.socials}
         />
       </main>
+      <PageMotion />
     </>
   );
 }

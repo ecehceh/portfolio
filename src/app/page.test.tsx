@@ -1,14 +1,29 @@
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { portfolio } from '@/content/portfolio';
+import { setMediaMatches } from '@/test/browser-stubs';
 import HomePage from './page';
 
-// jsdom has no WebGL; the 3D scenes are covered by the Playwright smoke tests.
+// jsdom has no WebGL, so the scenes are stubbed; the real ones are covered by
+// the Playwright smoke tests.
 vi.mock('@/lib/three/character-scene', () => ({
-  createCharacterScene: () => null,
-  createCharacterState: () => ({ xFrac: 0, y: 0, turn: 0, fade: 1, intro: 1 }),
+  createCharacterScene: () => ({ setPointer: () => {}, dispose: () => {} }),
+  createCharacterState: (intro: number) => ({ xFrac: 0, y: 0, turn: 0, fade: 1, intro }),
 }));
 vi.mock('@/lib/three/techstack-scene', () => ({ createTechstackScene: () => null }));
+
+describe('HomePage animations', () => {
+  it.each([
+    ['desktop', ['(min-width: 900px)']],
+    ['phone', ['(max-width: 899px)']],
+    ['reduced-motion phone', ['(max-width: 899px)', '(prefers-reduced-motion: reduce)']],
+  ])('mount and tear down cleanly on a %s layout', (_layout, queries) => {
+    setMediaMatches(queries);
+    const { unmount } = render(<HomePage />);
+    expect(screen.getByRole('heading', { level: 1 })).toBeVisible();
+    expect(() => unmount()).not.toThrow();
+  });
+});
 
 describe('HomePage', () => {
   it('server-renders every section from the portfolio content', () => {
