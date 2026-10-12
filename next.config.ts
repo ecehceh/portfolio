@@ -6,6 +6,9 @@ const isDev = process.env.NODE_ENV === 'development';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // The Dockerfile sets NEXT_OUTPUT=standalone to emit a self-contained server in
+  // .next/standalone. Everywhere else (npm start, CI, Vercel) builds as usual.
+  output: process.env.NEXT_OUTPUT === 'standalone' ? 'standalone' : undefined,
   // Pin the workspace root so a stray lockfile in a parent folder is never picked up.
   turbopack: { root: __dirname },
   async headers() {
