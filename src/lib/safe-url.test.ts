@@ -18,7 +18,16 @@ describe('safeUrl', () => {
     expect(safeUrl('  https://example.com  ')).toBe('https://example.com');
   });
 
-  it.each(['javascript:alert(1)', 'JaVaScRiPt:alert(1)', 'data:text/html,<b>x</b>', 'vbscript:x', 'ftp://x', ''])(
+  it.each([
+    'javascript:alert(1)',
+    'JaVaScRiPt:alert(1)',
+    'data:text/html,<b>x</b>',
+    'vbscript:x',
+    'ftp://x',
+    '//evil.example/phish',
+    './/evil.example',
+    '',
+  ])(
     'replaces the unsafe url %j with #',
     (url) => {
       expect(safeUrl(url)).toBe('#');

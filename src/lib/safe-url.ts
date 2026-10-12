@@ -1,4 +1,5 @@
-const SAFE_URL = /^(https?:|mailto:|#|\.{0,2}\/)/i;
+// Relative paths may start with ./ ../ or /, but never // (a protocol-relative link to another host).
+const SAFE_URL = /^(https?:|mailto:|#|(?:\.{1,2})?\/(?!\/))/i;
 const EXTERNAL_URL = /^https?:/i;
 
 /** Only allow http(s), mailto, anchors and relative paths — never javascript: or data: URLs. */
