@@ -379,8 +379,10 @@ main > .work {
   flex-direction: column;
   justify-content: center;
   padding-block: 6rem 4rem;
-  overflow: hidden;
 }
+/* Not under `main >`: once ScrollTrigger pins the section it is wrapped in a
+   .pin-spacer, and losing the clip would let the card track widen the page. */
+.work { overflow: hidden; }
 .work-title { margin-bottom: 2.5rem; }
 .work-track { display: flex; width: max-content; }
 .work-card {
