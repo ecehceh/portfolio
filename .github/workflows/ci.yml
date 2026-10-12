@@ -54,6 +54,10 @@ jobs:
     name: Conventional commit messages
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # The action lists the PR's commits through the API (needed on private repos).
+      pull-requests: read
     steps:
       - uses: actions/checkout@v5
         with:
