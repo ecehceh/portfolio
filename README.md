@@ -21,7 +21,7 @@ A personal developer portfolio with an interactive 3D avatar, scroll-driven anim
 | Animation | [GSAP](https://gsap.com/) + ScrollTrigger via `@gsap/react` |
 | Fonts & icons | Geist (`next/font`), Font Awesome (tree-shaken SVG) |
 | Testing | Vitest + Testing Library, Playwright |
-| CI | GitHub Actions, commitlint, Dependabot |
+| CI & delivery | GitHub Actions, commitlint, Dependabot, Docker |
 
 ## Getting started
 
@@ -92,13 +92,45 @@ Sections are server components, so the whole page is plain HTML before any JavaS
 3. **Custom domain:** in the Vercel project go to *Settings → Domains*, add the domain and create the DNS records Vercel shows at your registrar.
 4. Set the environment variable `NEXT_PUBLIC_SITE_URL` to the domain (e.g. `https://your-domain.com`) so canonical URLs, the sitemap and link previews use it. Without it, the Vercel production domain is used. See `.env.example`.
 
+## Running with Docker
+
+The repository also ships a production image for self-hosting (a VPS, Docker Swarm or Kubernetes). Vercel ignores these files.
+
+```bash
+npm run docker:up      # docker compose up --build --detach --wait
+npm run docker:smoke   # check the running container
+npm run docker:down
+```
+
+The site is then at http://localhost:3000. Configure it through the environment or a `.env` file next to `compose.yaml`:
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` | Public URL, baked in at build time (canonical URL, Open Graph, sitemap) |
+| `PORT` | `3000` | Host port the container is published on |
+
+Without Compose:
+
+```bash
+docker build -t portfolio --build-arg NEXT_PUBLIC_SITE_URL=https://your-domain.com .
+docker run -p 3000:3000 portfolio
+```
+
+About the image:
+
+- **Multi-stage build** on `node:22-alpine`: only Next.js's standalone server, the static assets and `public/` reach the final image (about 45 MB on top of Node).
+- **Hardened:** it runs as the unprivileged `node` user, and Compose adds a read-only filesystem, drops all Linux capabilities and sets `no-new-privileges`.
+- **Health check:** `docker ps` shows `healthy` once the server answers; `docker compose up --wait` waits for it.
+- **HTTPS expected in front:** the CSP includes `upgrade-insecure-requests`, so opening the container over plain `http://` from another device (e.g. `http://192.168.x.x:3000`) breaks the styles and scripts. `localhost` is fine. On a server, put it behind a TLS-terminating proxy such as Traefik, Caddy or an ingress controller.
+- CI builds the image and runs the smoke test on every pull request.
+
 ## Contributing workflow
 
 `main` always reflects what is deployed. Changes go through a branch and a pull request:
 
 1. Branch from `main`: `feat/…`, `fix/…`, `docs/…`, `chore/…`.
 2. Commit in small steps using [Conventional Commits](https://www.conventionalcommits.org/): `feat: add project images`, `fix: …`. Allowed types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, `ci`, `style`, `build`, `revert`.
-3. Open a pull request. CI runs lint, type check, unit tests (80% coverage gate), the production build, the Playwright smoke tests and commitlint, and Vercel posts a preview link.
+3. Open a pull request. CI runs lint, type check, unit tests (80% coverage gate), the production build, the Playwright smoke tests, the Docker image build and smoke test, and commitlint, and Vercel posts a preview link.
 4. Merge with **Rebase and merge** (or a merge commit) to keep each commit in `main`'s history, then delete the branch.
 
 Recommended GitHub settings (*Settings → Branches → Add rule* for `main`): require a pull request, require the CI checks to pass, and require a linear history.
