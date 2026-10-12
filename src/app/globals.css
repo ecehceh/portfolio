@@ -7,7 +7,8 @@
   --line: rgba(234, 229, 236, 0.14);
   --accent: #c2a4ff;
   --accent-strong: #8d4bff;
-  --font: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* --font-geist is set on <html> by next/font in layout.tsx. */
+  --font: var(--font-geist), system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --gutter: clamp(1rem, 4vw, 4.5rem);
   --rail: 3.5rem; /* width reserved for the fixed social icons */
@@ -22,7 +23,7 @@
 *::after { box-sizing: border-box; }
 
 /* No CSS `scroll-behavior: smooth` here: it breaks GSAP ScrollTrigger's measurements.
-   Anchor links are smooth-scrolled in main.js instead. */
+   Anchor links are smooth-scrolled in JS instead (see useAnchorScroll). */
 
 body {
   margin: 0;
@@ -179,8 +180,8 @@ ul { margin: 0; padding: 0; list-style: none; }
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
-.resume i { transition: transform 0.3s var(--ease-out); }
-.resume:hover i { transform: translateX(5px); }
+.resume svg { transition: transform 0.3s var(--ease-out); }
+.resume:hover svg { transform: translateX(5px); }
 
 /* ---------- Shared section bits ---------- */
 main > section {
@@ -502,8 +503,8 @@ main > .techstack {
 .contact-col a:hover { color: var(--accent); }
 .contact-socials { display: grid; gap: 0.5rem; }
 .contact-socials a { display: inline-flex; align-items: center; gap: 0.6rem; }
-.contact-socials i { font-size: 0.85rem; transition: transform 0.3s var(--ease-out); }
-.contact-socials a:hover i { transform: translate(3px, -3px); }
+.contact-socials svg { font-size: 0.85rem; transition: transform 0.3s var(--ease-out); }
+.contact-socials a:hover svg { transform: translate(3px, -3px); }
 .contact-credit { text-align: right; }
 .contact-credit p { font-size: clamp(1.4rem, 1rem + 1.2vw, 2.2rem); font-weight: 500; line-height: 1.2; }
 .contact-credit .copyright { margin-top: 1rem; font-size: 1rem; color: var(--muted); }
