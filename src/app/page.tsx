@@ -1,6 +1,7 @@
 import { Nav } from '@/components/layout/Nav';
-import { CharacterStage } from '@/components/motion/CharacterStage';
 import { SideRail } from '@/components/layout/SideRail';
+import { CharacterStage } from '@/components/motion/CharacterStage';
+import { TechStackCanvas } from '@/components/motion/TechStackCanvas';
 import { About } from '@/components/sections/About';
 import { Career } from '@/components/sections/Career';
 import { Contact } from '@/components/sections/Contact';
@@ -30,7 +31,7 @@ export default function HomePage() {
         <WhatIDo services={data.whatIDo} />
         <Career entries={data.career} />
         <Work projects={data.projects} />
-        <TechStack canvas={null} />
+        <TechStack canvas={<TechStackCanvas techs={data.techstack} />} />
         <Contact
           name={displayName(data)}
           email={data.email}

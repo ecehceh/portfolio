@@ -8,6 +8,7 @@ vi.mock('@/lib/three/character-scene', () => ({
   createCharacterScene: () => null,
   createCharacterState: () => ({ xFrac: 0, y: 0, turn: 0, fade: 1, intro: 1 }),
 }));
+vi.mock('@/lib/three/techstack-scene', () => ({ createTechstackScene: () => null }));
 
 describe('HomePage', () => {
   it('server-renders every section from the portfolio content', () => {
