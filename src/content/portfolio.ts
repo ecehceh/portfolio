@@ -14,7 +14,7 @@ export const portfolio: Portfolio = {
   firstName: 'CHRISTOPHER',
   lastName: 'EVAN',
   fullName: 'Christopher Evan Wijaksana',
-  logo: 'Christopher',
+  logo: 'CE',
   email: 'evanwijaksana@gmail.com',
   resumeUrl: '/assets/Christopher_Evan_Wijaksana_CV.pdf',
 
@@ -27,12 +27,12 @@ export const portfolio: Portfolio = {
     'Computer Science student at Bina Nusantara University working across DevOps, cybersecurity and AI — CI/CD pipelines, SIEM monitoring and AI-assisted threat analysis.',
 
   about:
-    "I'm a Computer Science student at Bina Nusantara University working where DevOps, cybersecurity and AI meet. As an IT Developer Intern at PT Malifax I built CI/CD pipelines, ran container orchestration in production and shipped Generative AI-powered threat analysis — and I'm sharpening my deep learning skills with PyTorch, deploying models on GCP and AWS.",
+    "I'm a Computer Science student at Bina Nusantara University focused on DevOps, security and AI. During my internship at PT Malifax I built CI/CD pipelines, ran containers in production and shipped an AI-powered threat analysis tool. Right now I'm training deep learning models in PyTorch and deploying them on GCP and AWS.",
 
   whatIDo: [
     {
       title: 'DEVOPS',
-      subtitle: 'Ship it safely',
+      subtitle: 'Containerization',
       text: 'Automating releases end to end — CI/CD pipelines with approval gates, containerised deployments with fast rollbacks, and secure, load-balanced infrastructure.',
       skills: ['Jenkins', 'Docker Swarm', 'Portainer', 'Harbor', 'Nginx', 'GitHub Actions', 'Linux', 'GCP'],
     },
@@ -77,7 +77,7 @@ export const portfolio: Portfolio = {
     },
   ],
 
-  // Highlights from the PT Malifax internship (internal work, so no public links).
+  // The first four are highlights from the PT Malifax internship (internal work, so no public links).
   projects: [
     {
       title: 'CI/CD Release Pipelines',
@@ -111,6 +111,14 @@ export const portfolio: Portfolio = {
       link: '',
       colors: ['#0891b2', '#172554'],
     },
+    {
+      title: 'Football Player Market Value Predictor',
+      category: 'Machine Learning',
+      tools: 'XGBoost, scikit-learn, pandas, Streamlit, Plotly — 696 Premier League transfers, explainable fee predictions',
+      image: '',
+      link: '',
+      colors: ['#16a34a', '#052e16'],
+    },
   ],
 
   // Balls in the "My Techstack" section. `text` is the label colour.
@@ -131,9 +139,10 @@ export const portfolio: Portfolio = {
     { label: 'GCP', color: '#4285f4', text: '#ffffff' },
   ],
 
-  // Add GitHub / Instagram etc. here when you want them on the site.
+  // Add Instagram etc. here when you want them on the site.
   socials: [
     { label: 'LinkedIn', icon: 'linkedin', url: 'https://linkedin.com/in/christopher-evan-w' },
+    { label: 'GitHub', icon: 'github', url: 'https://github.com/ecehceh' },
     { label: 'Email', icon: 'email', url: 'mailto:evanwijaksana@gmail.com' },
   ],
 
