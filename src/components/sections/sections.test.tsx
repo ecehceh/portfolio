@@ -43,6 +43,13 @@ describe('WhatIDo', () => {
     expect(screen.getAllByRole('article')).toHaveLength(portfolio.whatIDo.length);
     expect(screen.getByText('Docker Swarm')).toBeInTheDocument();
   });
+
+  it('titles the section on one line, numbers the cards and labels their skill lists', () => {
+    render(<WhatIDo services={portfolio.whatIDo} />);
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('WHAT I DO');
+    expect(screen.getByText('01')).toHaveAttribute('aria-hidden', 'true');
+    expect(screen.getAllByRole('list', { name: 'Skills and tools' })).toHaveLength(portfolio.whatIDo.length);
+  });
 });
 
 describe('Career', () => {

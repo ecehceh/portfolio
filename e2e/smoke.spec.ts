@@ -76,7 +76,7 @@ test.describe('home page', () => {
 
   test('never scrolls sideways', async ({ page }) => {
     await page.goto('/');
-    // Wait for ScrollTrigger to pin the work section, which wraps it in a pin-spacer.
+    // Wait for the work section's auto-scrolling track, which is wider than the page, to be set up.
     await page.waitForTimeout(1_500);
     const scrollX = await page.evaluate(() => {
       window.scrollTo(10_000, window.scrollY);

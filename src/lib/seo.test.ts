@@ -51,7 +51,7 @@ describe('personJsonLd', () => {
     const person = personJsonLd(portfolio, BASE);
     expect(person).toMatchObject({ '@type': 'Person', name: 'Christopher Evan Wijaksana', url: 'https://example.dev/' });
     expect(person.jobTitle).toBe(portfolio.jobTitle);
-    expect(person.sameAs).toEqual(['https://linkedin.com/in/christopher-evan-w']);
+    expect(person.sameAs).toEqual(['https://linkedin.com/in/christopher-evan-w', 'https://github.com/ecehceh']);
   });
 });
 

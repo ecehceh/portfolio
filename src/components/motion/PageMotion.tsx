@@ -3,13 +3,15 @@
 import { useAnchorScroll } from '@/hooks/useAnchorScroll';
 import { useBodyClassWhileVisible } from '@/hooks/useBodyClassWhileVisible';
 import { gsap, useGSAP } from '@/lib/gsap';
-import { DESKTOP_QUERY, prefersReducedMotion } from '@/lib/media';
+import { DESKTOP_QUERY, prefersReducedMotion, STACKED_QUERY } from '@/lib/media';
 import {
+  autoScrollWork,
   fillTimeline,
   playIntro,
   resetIntro,
   revealAboutWords,
   revealOnScroll,
+  revealWorkCardsStacked,
   scrollWorkSideways,
 } from '@/lib/motion/page-scenes';
 
@@ -25,7 +27,9 @@ export function PageMotion() {
 
   useGSAP(() => {
     if (!prefersReducedMotion()) playIntro();
-    gsap.matchMedia().add(DESKTOP_QUERY, scrollWorkSideways);
+    const media = gsap.matchMedia();
+    media.add(DESKTOP_QUERY, prefersReducedMotion() ? scrollWorkSideways : autoScrollWork);
+    media.add(STACKED_QUERY, revealWorkCardsStacked);
     revealAboutWords();
     fillTimeline();
     revealOnScroll();
