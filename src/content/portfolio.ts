@@ -19,9 +19,9 @@ export const portfolio: Portfolio = {
   resumeUrl: '/assets/Christopher_Evan_Wijaksana_CV.pdf',
 
   heroKicker: 'CS Student &',
-  heroWords: ['DEVOPS', 'SECURITY', 'AI'],
+  heroWords: ['DEVOPS', 'CLOUD', 'SECURITY', 'AI'],
   heroTitle: 'ENGINEER',
-  jobTitle: 'DevOps, Security & AI Engineer',
+  jobTitle: 'DevOps, Cloud, Security & AI Engineer',
 
   tagline:
     'Computer Science student at Bina Nusantara University working across DevOps, cybersecurity and AI — CI/CD pipelines, SIEM monitoring and AI-assisted threat analysis.',
