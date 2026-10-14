@@ -1,9 +1,10 @@
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import type { Project } from '@/content/types';
+import type { Certification, Project } from '@/content/types';
 import { portfolio } from '@/content/portfolio';
 import { About } from './About';
 import { Career } from './Career';
+import { Certifications } from './Certifications';
 import { Contact } from './Contact';
 import { Hero } from './Hero';
 import { ProjectCard } from './ProjectCard';
@@ -88,6 +89,45 @@ describe('ProjectCard', () => {
   it('renders the project image when one is set', () => {
     render(<ProjectCard project={{ ...baseProject, image: '/projects/demo.webp' }} index={0} />);
     expect(screen.getByRole('img', { name: 'Demo preview' })).toBeInTheDocument();
+  });
+});
+
+const cert: Certification = {
+  name: 'Cloud Practitioner',
+  issuer: 'Amazon Web Services',
+  issued: '2025-03-01',
+  image: '/badges/cloud-practitioner-abcdef12.png',
+  url: 'https://www.credly.com/badges/abcdef12',
+};
+
+describe('Certifications', () => {
+  it('renders nothing until badges are synced', () => {
+    const { container } = render(<Certifications certifications={[]} profileUrl="https://www.credly.com/users/jane" />);
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it('links every badge to its Credly page in a new tab, with the issuer and date', () => {
+    render(<Certifications certifications={[cert]} profileUrl="" />);
+    const card = screen.getByRole('link', { name: /Cloud Practitioner/ });
+    expect(card).toHaveAttribute('href', cert.url);
+    expect(card).toHaveAttribute('target', '_blank');
+    expect(card).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(within(card).getByText('Amazon Web Services')).toBeInTheDocument();
+    expect(within(card).getByText('Mar 2025')).toHaveAttribute('dateTime', '2025-03-01');
+    expect(screen.queryByRole('link', { name: /View all on Credly/ })).not.toBeInTheDocument();
+  });
+
+  it('shows the "View all" link when a profile is set', () => {
+    render(<Certifications certifications={[cert]} profileUrl="https://www.credly.com/users/jane" />);
+    expect(screen.getByRole('link', { name: /View all on Credly/ })).toHaveAttribute(
+      'href',
+      'https://www.credly.com/users/jane',
+    );
+  });
+
+  it('neutralises an unsafe badge link', () => {
+    render(<Certifications certifications={[{ ...cert, url: 'javascript:alert(1)' }]} profileUrl="" />);
+    expect(screen.getByRole('link', { name: /Cloud Practitioner/ })).toHaveAttribute('href', '#');
   });
 });
 

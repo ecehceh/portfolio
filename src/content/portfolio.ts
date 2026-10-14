@@ -7,7 +7,10 @@
  *   Leave `image` empty to get a generated gradient placeholder.
  * - Project links: a full URL (https://...) makes the card clickable;
  *   leave `link` empty for work that isn't public.
+ * - Certifications come from Credly: run `npm run sync:credly -- <credly-username>`
+ *   to refresh src/content/certifications.ts and the images in /public/badges.
  */
+import { certifications, credlyProfileUrl } from './certifications';
 import type { Portfolio } from './types';
 
 export const portfolio: Portfolio = {
@@ -138,6 +141,10 @@ export const portfolio: Portfolio = {
     { label: 'Wazuh', color: '#3d82f1', text: '#ffffff' },
     { label: 'GCP', color: '#4285f4', text: '#ffffff' },
   ],
+
+  // Synced from Credly (see the note at the top); the section hides itself while the list is empty.
+  certifications,
+  credlyUrl: credlyProfileUrl,
 
   // Add Instagram etc. here when you want them on the site.
   socials: [

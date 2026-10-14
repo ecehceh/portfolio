@@ -36,3 +36,11 @@ export function projectGradient(colors: readonly [string, string] = DEFAULT_GRAD
   const [from, to] = colors;
   return `radial-gradient(circle at 30% 20%, ${from}, ${to} 75%)`;
 }
+
+const MONTH_YEAR = new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+
+/** "2025-03-01" → "Mar 2025". Read as UTC so the month never shifts with the server's time zone. */
+export function formatMonthYear(isoDate: string): string {
+  const date = new Date(`${isoDate}T00:00:00Z`);
+  return Number.isNaN(date.getTime()) ? isoDate : MONTH_YEAR.format(date);
+}

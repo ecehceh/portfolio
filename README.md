@@ -49,15 +49,18 @@ Playwright downloads its own Chromium the first time (`npx playwright install ch
 
 ```
 ├── public/assets/            # Resume PDF and other static files
+├── public/badges/            # Credly badge images (written by npm run sync:credly)
+├── scripts/                  # Credly badge sync, Docker smoke test
 ├── src/
 │   ├── app/                  # Next.js routes: page, layout, globals.css,
 │   │                         # Open Graph image, icon, robots.txt, sitemap.xml
 │   ├── content/
 │   │   ├── portfolio.ts      # ✏️ All site content — edit this to update the portfolio
+│   │   ├── certifications.ts # Generated from Credly by npm run sync:credly
 │   │   └── types.ts          # The content's shape
 │   ├── components/
 │   │   ├── layout/           # Nav and the fixed social/resume rail
-│   │   ├── sections/         # Hero, About, What I do, Career, Work, Techstack, Contact
+│   │   ├── sections/         # Hero, About, What I do, Career, Work, Techstack, Certifications, Contact
 │   │   ├── motion/           # Client components: 3D canvases, cursor, animations
 │   │   └── ui/               # Icons, safe links, current year
 │   ├── hooks/                # Scroll, visibility and anchor-link hooks
@@ -75,6 +78,14 @@ Sections are server components, so the whole page is plain HTML before any JavaS
 **Content** — edit `src/content/portfolio.ts`: name, hero text, about, skills, career timeline, projects, tech stack balls, socials and contact details. TypeScript and the content tests catch typos such as a missing field, an invalid colour or an unsafe link.
 
 **Project images** — put images in `public/projects/` and set a project's `image` field (e.g. `"/projects/wazuh-dashboard.webp"`). Leave it empty for a gradient placeholder. Set `link` to a URL to make the card clickable.
+
+**Certifications** — the section before Contact shows your public [Credly](https://www.credly.com) badges. To refresh it, run:
+
+```bash
+npm run sync:credly -- <credly-username>   # from credly.com/users/<credly-username>
+```
+
+This downloads each accepted, public, unexpired badge image into `public/badges/` and rewrites `src/content/certifications.ts`. Commit both. Each card links to the badge's Credly page so visitors can verify it. Credly is only contacted when you run the script, never during the build or when someone visits the page, so the strict CSP stays as it is. The section hides itself while the list is empty.
 
 **Avatar** — the constants at the top of `src/lib/three/avatar-model.ts` control its look:
 

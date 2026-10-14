@@ -17,12 +17,23 @@ describe('portfolio content', () => {
       ...portfolio.socials.map((social) => social.url),
       ...portfolio.projects.map((project) => project.link).filter(Boolean),
       ...portfolio.projects.map((project) => project.image).filter(Boolean),
-    ];
+      ...portfolio.certifications.flatMap((cert) => [cert.url, cert.image]),
+      portfolio.credlyUrl,
+    ].filter(Boolean);
     urls.forEach((url) => expect(safeUrl(url)).toBe(url));
   });
 
   it('serves the resume from the public folder', () => {
     expect(portfolio.resumeUrl.startsWith('/')).toBe(true);
+  });
+
+  it('links certifications to Credly and serves their badges from the public folder', () => {
+    portfolio.certifications.forEach((cert) => {
+      expect(cert.url).toMatch(/^https:\/\/www\.credly\.com\/badges\//);
+      expect(cert.image).toMatch(/^\/badges\/[\w-]+\.(png|jpe?g|webp)$/);
+      expect(cert.issued).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    });
+    if (portfolio.credlyUrl) expect(portfolio.credlyUrl).toMatch(/^https:\/\/www\.credly\.com\/users\//);
   });
 
   it('uses valid hex colours for project gradients and tech balls', () => {
@@ -39,5 +50,6 @@ describe('portfolio content', () => {
     expect(unique(portfolio.socials.map((social) => social.label))).toBe(true);
     expect(unique(portfolio.projects.map((project) => project.title))).toBe(true);
     expect(unique(portfolio.whatIDo.map((card) => card.title))).toBe(true);
+    expect(unique(portfolio.certifications.map((cert) => cert.url))).toBe(true);
   });
 });
