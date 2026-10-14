@@ -31,6 +31,17 @@ export interface Project {
   colors?: readonly [string, string];
 }
 
+export interface Certification {
+  name: string;
+  issuer: string;
+  /** ISO date (YYYY-MM-DD) the badge was issued. */
+  issued: string;
+  /** Badge image under /public (e.g. "/badges/cloud-practitioner-1a2b3c4d.png"). */
+  image: string;
+  /** The badge's public Credly page, where anyone can verify it. */
+  url: string;
+}
+
 export interface Tech {
   label: string;
   /** Ball colour. */
@@ -60,6 +71,10 @@ export interface Portfolio {
   career: readonly CareerEntry[];
   projects: readonly Project[];
   techstack: readonly Tech[];
+  /** Newest first. Hidden when empty. */
+  certifications: readonly Certification[];
+  /** Credly profile for the "View all" link; empty to hide it. */
+  credlyUrl: string;
   socials: readonly Social[];
   education: string;
   location: string;

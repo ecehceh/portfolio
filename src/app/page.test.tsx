@@ -29,7 +29,9 @@ describe('HomePage', () => {
   it('server-renders every section from the portfolio content', () => {
     const { container } = render(<HomePage />);
     const ids = Array.from(container.querySelectorAll('main > section'), (section) => section.id);
-    expect(ids).toEqual(['top', 'about', 'whatido', 'career', 'work', 'techstack', 'contact']);
+    // The certifications section only renders once badges have been synced from Credly.
+    const certifications = portfolio.certifications.length ? ['certifications'] : [];
+    expect(ids).toEqual(['top', 'about', 'whatido', 'career', 'work', 'techstack', ...certifications, 'contact']);
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
       `${portfolio.firstName}${portfolio.lastName}`,
     );

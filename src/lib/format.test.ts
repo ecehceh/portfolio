@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { displayName, padIndex, projectGradient, splitWords, toTitleCase } from './format';
+import { displayName, formatMonthYear, padIndex, projectGradient, splitWords, toTitleCase } from './format';
 
 describe('toTitleCase', () => {
   it('capitalises the first letter of every word', () => {
@@ -49,5 +49,16 @@ describe('projectGradient', () => {
 
   it('uses the default purple gradient when no colours are given', () => {
     expect(projectGradient()).toBe('radial-gradient(circle at 30% 20%, #7c3aed, #1e1b4b 75%)');
+  });
+});
+
+describe('formatMonthYear', () => {
+  it('formats an ISO date as a short month and year, whatever the time zone', () => {
+    expect(formatMonthYear('2025-03-01')).toBe('Mar 2025');
+    expect(formatMonthYear('2024-12-31')).toBe('Dec 2024');
+  });
+
+  it('returns the input unchanged when it is not a date', () => {
+    expect(formatMonthYear('soon')).toBe('soon');
   });
 });

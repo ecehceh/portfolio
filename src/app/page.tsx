@@ -7,6 +7,7 @@ import { RotatingWord } from '@/components/motion/RotatingWord';
 import { TechStackCanvas } from '@/components/motion/TechStackCanvas';
 import { About } from '@/components/sections/About';
 import { Career } from '@/components/sections/Career';
+import { Certifications } from '@/components/sections/Certifications';
 import { Contact } from '@/components/sections/Contact';
 import { Hero } from '@/components/sections/Hero';
 import { TechStack } from '@/components/sections/TechStack';
@@ -43,6 +44,7 @@ export default function HomePage() {
         <Career entries={data.career} />
         <Work projects={data.projects} />
         <TechStack canvas={<TechStackCanvas techs={data.techstack} />} />
+        <Certifications certifications={data.certifications} profileUrl={data.credlyUrl} />
         <Contact
           name={displayName(data)}
           email={data.email}

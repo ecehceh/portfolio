@@ -18,7 +18,8 @@
     "test:e2e": "playwright test",
     "docker:up": "docker compose up --build --detach --wait",
     "docker:down": "docker compose down",
-    "docker:smoke": "bash scripts/docker-smoke.sh"
+    "docker:smoke": "bash scripts/docker-smoke.sh",
+    "sync:credly": "node scripts/sync-credly.mjs"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "7.3.1",
