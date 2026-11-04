@@ -9,6 +9,48 @@ export const credlyProfileUrl = 'https://www.credly.com/users/christopher-evan.b
 
 export const certifications: readonly Certification[] = [
   {
+    name: 'Deploy Multi-Agent Architectures',
+    issuer: 'Google Cloud',
+    issued: '2026-11-02',
+    image: '/badges/deploy-multi-agent-architectures-80492831.png',
+    url: 'https://www.credly.com/badges/80492831-c712-45dc-b9ca-8e995320254b',
+  },
+  {
+    name: 'Orchestrate Multi-agent Workflows with Gemini Enterprise',
+    issuer: 'Google Cloud',
+    issued: '2026-11-02',
+    image: '/badges/orchestrate-multi-agent-workflows-with-gemini-enterprise-b0b7434a.png',
+    url: 'https://www.credly.com/badges/b0b7434a-a70b-4ff1-bcc7-757c79f836dc',
+  },
+  {
+    name: 'Create Your First Gemini Enterprise Application',
+    issuer: 'Google Cloud',
+    issued: '2026-10-26',
+    image: '/badges/create-your-first-gemini-enterprise-application-d8518844.png',
+    url: 'https://www.credly.com/badges/d8518844-c23d-4a1f-afbf-330f95bf718b',
+  },
+  {
+    name: 'Engineer AI Agents with Agent Development Kit (ADK)',
+    issuer: 'Google Cloud',
+    issued: '2026-10-26',
+    image: '/badges/engineer-ai-agents-with-agent-development-kit-adk-6418a8e1.png',
+    url: 'https://www.credly.com/badges/6418a8e1-e8ff-46d1-afbd-0fc93dbad5bc',
+  },
+  {
+    name: 'The Basics of Google Cloud Compute Skill Badge',
+    issuer: 'Google Cloud',
+    issued: '2026-10-16',
+    image: '/badges/the-basics-of-google-cloud-compute-skill-badge-d54798e6.png',
+    url: 'https://www.credly.com/badges/d54798e6-6fd3-47ff-9627-341c24199d4c',
+  },
+  {
+    name: 'Build Serverless Applications with Cloud Run Functions',
+    issuer: 'Google Cloud',
+    issued: '2026-10-14',
+    image: '/badges/build-serverless-applications-with-cloud-run-functions-76d64275.png',
+    url: 'https://www.credly.com/badges/76d64275-654b-4bf3-ac8a-fd3b969f12d6',
+  },
+  {
     name: 'Build Real World AI Applications with Gemini and Imagen Skill Badge',
     issuer: 'Google Cloud',
     issued: '2026-10-12',
