@@ -9,6 +9,13 @@ export const credlyProfileUrl = 'https://www.credly.com/users/christopher-evan.b
 
 export const certifications: readonly Certification[] = [
   {
+    name: 'Build Serverless Applications with Cloud Run Functions',
+    issuer: 'Google Cloud',
+    issued: '2026-10-14',
+    image: '/badges/build-serverless-applications-with-cloud-run-functions-76d64275.png',
+    url: 'https://www.credly.com/badges/76d64275-654b-4bf3-ac8a-fd3b969f12d6',
+  },
+  {
     name: 'Build Real World AI Applications with Gemini and Imagen Skill Badge',
     issuer: 'Google Cloud',
     issued: '2026-10-12',
